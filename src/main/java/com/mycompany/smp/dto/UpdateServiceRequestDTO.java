@@ -14,36 +14,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ServiceRequestDTO {
+public class UpdateServiceRequestDTO {
 
-    //@NotNull
     private String title;
     private String description;
-    // @NotNull
-    private String mobile;
-    private String altNumber;
-    //@NotNull
-    private Long categoryId;
-    // @NotNull
-    private String email1;
-    private String email2;
-    //@NotNull
-    private String addressLine;
-    private String street;
-    //@NotNull
-    private String city;
-    private String district;
-    //@NotNull
-    private String pinCode;
-    @NotNull
-    private String state;
-    private String country;
-    private String lat;
-    private String lng;
     private String operationTiming;
     private Boolean active;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     public Boolean isActive() {
         return active;

@@ -2,6 +2,7 @@ package com.mycompany.smp.mapper;
 
 import com.mycompany.smp.dto.ServiceRequestDTO;
 import com.mycompany.smp.entity.ServiceEntity;
+import com.mycompany.smp.service.ServiceResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -18,4 +19,8 @@ public interface ServiceDetailMapper {
     @Mapping(target = "createdAt", source = "createdAt", defaultExpression = "java(java.time.LocalDateTime.now())")
     @Mapping(target = "updatedAt", source = "updatedAt", defaultExpression = "java(java.time.LocalDateTime.now())")
     ServiceEntity toEntity(ServiceRequestDTO requestDTO);
+
+    @Mapping(source = "mobile", target = "phone1")
+    @Mapping(source = "altNumber", target = "phone2")
+    ServiceResponseDTO toDto(ServiceEntity serviceEntity);
 }
