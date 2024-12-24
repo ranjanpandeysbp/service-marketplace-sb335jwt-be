@@ -12,7 +12,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,11 +38,16 @@ public class CategoryController {
 
     @GetMapping
     public ResponseEntity<List<CategoryEntity>> allCategories(){
-        return new ResponseEntity<>(categoryRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(categoryRepository.findAllByOrderByNameAsc(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<CategoryEntity> getCategory(@PathVariable Long categoryId){
+        return new ResponseEntity<>(categoryRepository.findById(categoryId).get(), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping("/{categoryId}")
+        @PutMapping("/{categoryId}")
     public ResponseEntity<CategoryEntity> updateCategory(@Valid @RequestBody CategoryEntity category, @PathVariable Long categoryId){
         Optional<CategoryEntity> optCe = categoryRepository.findById(categoryId);
         if(optCe.isPresent()){

@@ -1,10 +1,8 @@
 package com.mycompany.smp.controller;
 
 import com.mycompany.smp.dto.ServiceRequestDTO;
-import com.mycompany.smp.dto.UpdateServiceRequestDTO;
-import com.mycompany.smp.service.CommonService;
 import com.mycompany.smp.service.ServiceDetailServiceImpl;
-import com.mycompany.smp.service.ServiceResponseDTO;
+import com.mycompany.smp.dto.ServiceResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +25,7 @@ public class ServiceDetailController {
     @PreAuthorize("hasRole('PROVIDER') or hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<ServiceResponseDTO> addService(@Valid @RequestBody ServiceRequestDTO serviceRequestDTO){
-        ServiceResponseDTO serviceResponseDTO = (ServiceResponseDTO) serviceDetailService.add(serviceRequestDTO);
+        ServiceResponseDTO serviceResponseDTO = serviceDetailService.add(serviceRequestDTO);
         return new ResponseEntity<>(serviceResponseDTO, HttpStatus.CREATED);
     }
 
@@ -40,12 +38,12 @@ public class ServiceDetailController {
     @PreAuthorize("hasRole('PROVIDER') or hasRole('ADMIN')")
     @GetMapping("/{serviceId}")
     public ResponseEntity<ServiceResponseDTO> get(@PathVariable Long serviceId){
-        return new ResponseEntity<>((ServiceResponseDTO)serviceDetailService.get(serviceId), HttpStatus.OK);
+        return new ResponseEntity<>(serviceDetailService.get(serviceId), HttpStatus.OK);
     }
 
     @PutMapping("/{serviceId}")
     public ResponseEntity<ServiceResponseDTO> updateService(@Valid @RequestBody ServiceRequestDTO serviceRequestDTO, @PathVariable Long serviceId){
-        return new ResponseEntity<>((ServiceResponseDTO)serviceDetailService.update(serviceRequestDTO, serviceId), HttpStatus.OK);
+        return new ResponseEntity<>(serviceDetailService.update(serviceRequestDTO, serviceId), HttpStatus.OK);
     }
 
     @PatchMapping("/{serviceId}")

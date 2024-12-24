@@ -1,4 +1,4 @@
-package com.mycompany.smp.service;
+package com.mycompany.smp.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -26,6 +26,9 @@ public class ServiceResponseDTO {
     private String pinCode;
     private String state;
     private String country;
+    private String categoryName;
+    private String businessType;
+    private String industryType;
     private String lat;
     private String lng;
     private String operationTiming;

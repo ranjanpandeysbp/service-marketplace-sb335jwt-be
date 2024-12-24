@@ -2,7 +2,7 @@ package com.mycompany.smp.service;
 
 import com.mycompany.smp.dto.ErrorDTO;
 import com.mycompany.smp.dto.ServiceRequestDTO;
-import com.mycompany.smp.dto.UpdateServiceRequestDTO;
+import com.mycompany.smp.dto.ServiceResponseDTO;
 import com.mycompany.smp.entity.CategoryEntity;
 import com.mycompany.smp.entity.ServiceEntity;
 import com.mycompany.smp.entity.UserEntity;
@@ -22,7 +22,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class ServiceDetailServiceImpl implements CommonService<ServiceResponseDTO ,ServiceRequestDTO> {
+public class ServiceDetailServiceImpl implements CommonService<ServiceResponseDTO,ServiceRequestDTO> {
 
     @Autowired
     private ServiceRepository serviceRepository;

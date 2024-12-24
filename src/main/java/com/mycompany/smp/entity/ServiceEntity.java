@@ -30,6 +30,7 @@ public class ServiceEntity {
     private String pinCode;
     private String state;
     private String country;
+    private String image;
     private String lat;
     private String lng;
     private String operationTiming;
@@ -38,6 +39,10 @@ public class ServiceEntity {
     private UserEntity provider;
     @ManyToOne
     private CategoryEntity category;
+    @ManyToOne
+    private BusinessTypeEntity businessType;
+    @ManyToOne
+    private IndustryTypeEntity industryType;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

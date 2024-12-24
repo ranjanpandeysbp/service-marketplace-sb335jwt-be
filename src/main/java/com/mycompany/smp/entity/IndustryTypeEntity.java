@@ -11,21 +11,21 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "categories")
+@Table(name = "industry_type")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CategoryEntity {
+public class IndustryTypeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotNull
     private String name;
     private String image;
-    private Boolean active = Boolean.TRUE;
     private String description;
+    private Boolean active = Boolean.TRUE;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
