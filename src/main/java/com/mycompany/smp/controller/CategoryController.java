@@ -46,6 +46,12 @@ public class CategoryController {
         return new ResponseEntity<>(categoryRepository.findById(categoryId).get(), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<Long> deleteCategory(@PathVariable Long categoryId){
+        categoryRepository.deleteById(categoryId);
+        return new ResponseEntity<>(categoryId, HttpStatus.NO_CONTENT);
+    }
+
     @PreAuthorize("hasRole('ADMIN')")
         @PutMapping("/{categoryId}")
     public ResponseEntity<CategoryEntity> updateCategory(@Valid @RequestBody CategoryEntity category, @PathVariable Long categoryId){

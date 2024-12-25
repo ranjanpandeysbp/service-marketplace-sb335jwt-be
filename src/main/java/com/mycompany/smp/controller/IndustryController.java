@@ -37,7 +37,18 @@ public class IndustryController {
 
     @GetMapping
     public ResponseEntity<List<IndustryTypeEntity>> allIndustriesType(){
-        return new ResponseEntity<>(industryRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(industryRepository.findAllByOrderByNameAsc(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{industryTypeId}")
+    public ResponseEntity<IndustryTypeEntity> getIndustriesType(@PathVariable Long industryTypeId){
+        return new ResponseEntity<>(industryRepository.findById(industryTypeId).get(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{industryTypeId}")
+    public ResponseEntity<Long> deleteIndustryType(@PathVariable Long industryTypeId){
+        industryRepository.deleteById(industryTypeId);
+        return new ResponseEntity<>(industryTypeId, HttpStatus.NO_CONTENT);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

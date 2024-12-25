@@ -2,10 +2,8 @@ package com.mycompany.smp.controller;
 
 import com.mycompany.smp.dto.ErrorDTO;
 import com.mycompany.smp.entity.BusinessTypeEntity;
-import com.mycompany.smp.entity.IndustryTypeEntity;
 import com.mycompany.smp.exception.BusinessException;
 import com.mycompany.smp.repository.BusinessRepository;
-import com.mycompany.smp.repository.IndustryRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +37,18 @@ public class BusinessController {
 
     @GetMapping
     public ResponseEntity<List<BusinessTypeEntity>> allBusinessType(){
-        return new ResponseEntity<>(businessRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(businessRepository.findAllByOrderByNameAsc(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{businessTypeId}")
+    public ResponseEntity<BusinessTypeEntity> getBusinessType(@PathVariable Long businessTypeId){
+        return new ResponseEntity<>(businessRepository.findById(businessTypeId).get(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{businessTypeId}")
+    public ResponseEntity<Long> deleteBusinessType(@PathVariable Long businessTypeId){
+        businessRepository.deleteById(businessTypeId);
+        return new ResponseEntity<>(businessTypeId, HttpStatus.NO_CONTENT);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
