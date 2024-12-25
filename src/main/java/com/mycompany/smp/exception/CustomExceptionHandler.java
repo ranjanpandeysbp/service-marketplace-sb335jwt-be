@@ -1,6 +1,8 @@
 package com.mycompany.smp.exception;
 
 import com.mycompany.smp.dto.ErrorDTO;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -47,5 +49,17 @@ public class CustomExceptionHandler {
             logger.error("BusinessException is thrown - level-error: {} - {}", em.getCode(), em.getMessage());
         }
         return new ResponseEntity<List<ErrorDTO>>(bex.getErrors(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<List<ErrorDTO>> handleExpiredJwtException(ExpiredJwtException eje){
+        ErrorDTO dto = new ErrorDTO("JWT_EXPIRED_001", "JWT Token Expired");
+        return new ResponseEntity<List<ErrorDTO>>(List.of(dto), HttpStatus.resolve(417));
+    }
+
+    @ExceptionHandler(MalformedJwtException.class)
+    public ResponseEntity<List<ErrorDTO>> handleTemperedJwtException(MalformedJwtException eje){
+        ErrorDTO dto = new ErrorDTO("JWT_TEMPERED_001", "JWT Token Tempered");
+        return new ResponseEntity<List<ErrorDTO>>(List.of(dto), HttpStatus.resolve(417));
     }
 }
