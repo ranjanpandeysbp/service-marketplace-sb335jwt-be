@@ -1,15 +1,15 @@
 package com.mycompany.smp.service;
 
+import com.mycompany.smp.dto.BusinessRequestDTO;
 import com.mycompany.smp.dto.ErrorDTO;
-import com.mycompany.smp.dto.ServiceRequestDTO;
-import com.mycompany.smp.dto.ServiceResponseDTO;
+import com.mycompany.smp.dto.BusinessResponseDTO;
+import com.mycompany.smp.entity.BusinessDetailEntity;
 import com.mycompany.smp.entity.CategoryEntity;
-import com.mycompany.smp.entity.ServiceEntity;
 import com.mycompany.smp.entity.UserEntity;
 import com.mycompany.smp.exception.BusinessException;
-import com.mycompany.smp.mapper.ServiceDetailMapper;
+import com.mycompany.smp.mapper.BusinessDetailMapper;
 import com.mycompany.smp.repository.CategoryRepository;
-import com.mycompany.smp.repository.ServiceRepository;
+import com.mycompany.smp.repository.BusinessDetailRepository;
 import com.mycompany.smp.repository.UserRepository;
 import com.mycompany.smp.util.CommonUtil;
 import org.springframework.beans.BeanUtils;
@@ -22,10 +22,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class ServiceDetailServiceImpl implements CommonService<ServiceResponseDTO,ServiceRequestDTO> {
+public class BusinessDetailServiceImpl implements CommonService<BusinessResponseDTO, BusinessRequestDTO> {
 
     @Autowired
-    private ServiceRepository serviceRepository;
+    private BusinessDetailRepository serviceRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -34,7 +34,7 @@ public class ServiceDetailServiceImpl implements CommonService<ServiceResponseDT
     private CategoryRepository categoryRepository;
 
     @Override
-    public ServiceResponseDTO add(ServiceRequestDTO request) {
+    public BusinessResponseDTO add(BusinessRequestDTO request) {
 
 //        ServiceEntity se = new ServiceEntity();
 //        BeanUtils.copyProperties(request, se);
@@ -42,10 +42,10 @@ public class ServiceDetailServiceImpl implements CommonService<ServiceResponseDT
 //        se.setUpdatedAt(LocalDateTime.now());
 //        se.setActive(true);
 
-        ServiceEntity se = ServiceDetailMapper.INSTANCE.toEntity(request);
+        BusinessDetailEntity se = BusinessDetailMapper.INSTANCE.toEntity(request);
         UserDetailsImpl userDetails = commonUtil.loggedInUser();
         Optional<UserEntity> optUe = userRepository.findById(userDetails.getId());
-        ServiceResponseDTO sr = null;
+        BusinessResponseDTO sr = null;
         if(optUe.isPresent()){
             se.setProvider(optUe.get());
             Optional<CategoryEntity> optCe = categoryRepository.findById(request.getCategoryId());
@@ -53,20 +53,20 @@ public class ServiceDetailServiceImpl implements CommonService<ServiceResponseDT
                 se.setCategory(optCe.get());
             }
             se = serviceRepository.save(se);
-            sr = new ServiceResponseDTO();
+            sr = new BusinessResponseDTO();
             BeanUtils.copyProperties(se, sr);
         }
         return sr;
     }
 
     @Override
-    public ServiceResponseDTO update(ServiceRequestDTO request, Long id) {
-        Optional<ServiceEntity> optSe = serviceRepository.findById(id);
+    public BusinessResponseDTO update(BusinessRequestDTO request, Long id) {
+        Optional<BusinessDetailEntity> optSe = serviceRepository.findById(id);
         optSe.orElseThrow(
                 () -> new BusinessException(
                         List.of(new ErrorDTO("SERVICE_NOT_FOUND", "The service to be updated does not exist"))
                 ));
-        ServiceEntity se = optSe.get();
+        BusinessDetailEntity se = optSe.get();
         if(Objects.nonNull(request.getOperationTiming())){
             se.setOperationTiming(request.getOperationTiming());
         }
@@ -78,49 +78,49 @@ public class ServiceDetailServiceImpl implements CommonService<ServiceResponseDT
         }
         se.setUpdatedAt(LocalDateTime.now());
         se = serviceRepository.save(se);
-        return ServiceDetailMapper.INSTANCE.toDto(se);
+        return BusinessDetailMapper.INSTANCE.toDto(se);
     }
 
     @Override
-    public ServiceResponseDTO delete(Long id) {
+    public BusinessResponseDTO delete(Long id) {
         return null;
     }
 
     @Override
-    public ServiceResponseDTO get(Long id) {
-        Optional<ServiceEntity> optSe = serviceRepository.findById(id);
+    public BusinessResponseDTO get(Long id) {
+        Optional<BusinessDetailEntity> optSe = serviceRepository.findById(id);
         optSe.orElseThrow(
                 () -> new BusinessException(
                         List.of(new ErrorDTO("SERVICE_NOT_FOUND", "The service to be updated does not exist"))
                 ));
-        return ServiceDetailMapper.INSTANCE.toDto(optSe.get());
+        return BusinessDetailMapper.INSTANCE.toDto(optSe.get());
     }
 
     @Override
-    public List<ServiceResponseDTO> getAll(Long providerId) {
+    public List<BusinessResponseDTO> getAll(Long providerId) {
         //UserDetailsImpl userDetails = commonUtil.loggedInUser();
-        List<ServiceEntity> seList = serviceRepository.findAllByProviderId(providerId);
+        List<BusinessDetailEntity> seList = serviceRepository.findAllByProviderId(providerId);
         //return seList.stream().map((se)-> ServiceDetailMapper.INSTANCE.toDto(se)).toList();
-        return seList.stream().map(ServiceDetailMapper.INSTANCE::toDto).toList();
+        return seList.stream().map(BusinessDetailMapper.INSTANCE::toDto).toList();
     }
 
     @Override
-    public List<ServiceResponseDTO> search(ServiceRequestDTO request) {
+    public List<BusinessResponseDTO> search(BusinessRequestDTO request) {
         return List.of();
     }
 
-    public ServiceResponseDTO updateStatus(ServiceRequestDTO request, Long serviceId){
-        Optional<ServiceEntity> optSe = serviceRepository.findById(serviceId);
+    public BusinessResponseDTO updateStatus(BusinessRequestDTO request, Long serviceId){
+        Optional<BusinessDetailEntity> optSe = serviceRepository.findById(serviceId);
         optSe.orElseThrow(
                 () -> new BusinessException(
                         List.of(new ErrorDTO("SERVICE_NOT_FOUND", "The service to be updated does not exist"))
                 ));
-        ServiceEntity se = optSe.get();
+        BusinessDetailEntity se = optSe.get();
         if(Objects.nonNull(request.isActive())){
             se.setActive(request.isActive());
         }
         se.setUpdatedAt(LocalDateTime.now());
         se = serviceRepository.save(se);
-        return ServiceDetailMapper.INSTANCE.toDto(se);
+        return BusinessDetailMapper.INSTANCE.toDto(se);
     }
 }

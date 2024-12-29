@@ -1,8 +1,8 @@
 package com.mycompany.smp.controller;
 
-import com.mycompany.smp.dto.ServiceRequestDTO;
-import com.mycompany.smp.service.ServiceDetailServiceImpl;
-import com.mycompany.smp.dto.ServiceResponseDTO;
+import com.mycompany.smp.dto.BusinessRequestDTO;
+import com.mycompany.smp.dto.BusinessResponseDTO;
+import com.mycompany.smp.service.BusinessDetailServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,40 +14,40 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/services")
-public class ServiceDetailController {
+public class BusinessDetailController {
 
-    private ServiceDetailServiceImpl serviceDetailService;
+    private BusinessDetailServiceImpl serviceDetailService;
 
-    public ServiceDetailController(ServiceDetailServiceImpl serviceDetailService){
+    public BusinessDetailController(BusinessDetailServiceImpl serviceDetailService){
         this.serviceDetailService = serviceDetailService;
     }
 
     @PreAuthorize("hasRole('PROVIDER') or hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<ServiceResponseDTO> addService(@Valid @RequestBody ServiceRequestDTO serviceRequestDTO){
-        ServiceResponseDTO serviceResponseDTO = serviceDetailService.add(serviceRequestDTO);
+    public ResponseEntity<BusinessResponseDTO> addService(@Valid @RequestBody BusinessRequestDTO serviceRequestDTO){
+        BusinessResponseDTO serviceResponseDTO = serviceDetailService.add(serviceRequestDTO);
         return new ResponseEntity<>(serviceResponseDTO, HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasRole('PROVIDER') or hasRole('ADMIN')")
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ServiceResponseDTO>> getAll(@PathVariable Long userId){
+    public ResponseEntity<List<BusinessResponseDTO>> getAll(@PathVariable Long userId){
         return new ResponseEntity<>(serviceDetailService.getAll(userId), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('PROVIDER') or hasRole('ADMIN')")
     @GetMapping("/{serviceId}")
-    public ResponseEntity<ServiceResponseDTO> get(@PathVariable Long serviceId){
+    public ResponseEntity<BusinessResponseDTO> get(@PathVariable Long serviceId){
         return new ResponseEntity<>(serviceDetailService.get(serviceId), HttpStatus.OK);
     }
 
     @PutMapping("/{serviceId}")
-    public ResponseEntity<ServiceResponseDTO> updateService(@Valid @RequestBody ServiceRequestDTO serviceRequestDTO, @PathVariable Long serviceId){
+    public ResponseEntity<BusinessResponseDTO> updateService(@Valid @RequestBody BusinessRequestDTO serviceRequestDTO, @PathVariable Long serviceId){
         return new ResponseEntity<>(serviceDetailService.update(serviceRequestDTO, serviceId), HttpStatus.OK);
     }
 
     @PatchMapping("/{serviceId}")
-    public ResponseEntity<ServiceResponseDTO> updateServiceStatus(@Valid @RequestBody ServiceRequestDTO serviceRequestDTO, @PathVariable Long serviceId){
+    public ResponseEntity<BusinessResponseDTO> updateServiceStatus(@Valid @RequestBody BusinessRequestDTO serviceRequestDTO, @PathVariable Long serviceId){
         return new ResponseEntity<>(serviceDetailService.updateStatus(serviceRequestDTO, serviceId), HttpStatus.OK);
     }
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ServiceResponseDTO {
+public class BusinessResponseDTO {
     private Long id;
     private String title;
     private String description;

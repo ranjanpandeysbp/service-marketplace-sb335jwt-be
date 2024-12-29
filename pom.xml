@@ -11,8 +11,8 @@
 	<groupId>com.mycompany</groupId>
 	<artifactId>smp-app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Service Market Place</name>
-	<description>Service Market Place</description>
+	<name>Business Market Place</name>
+	<description>Business Market Place</description>
 	<url/>
 	<licenses>
 		<license/>

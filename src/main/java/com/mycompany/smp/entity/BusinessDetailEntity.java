@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceEntity {
+public class BusinessDetailEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,6 +31,7 @@ public class ServiceEntity {
     private String state;
     private String country;
     private String image;
+    private String googleEmbed;
     private String lat;
     private String lng;
     private String operationTiming;
