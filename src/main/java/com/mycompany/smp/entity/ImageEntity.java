@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Blob;
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "images")
 @Data
@@ -14,8 +17,11 @@ public class ImageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
-    private String url;
+    @Lob
+    private Blob image;
+    private String imagePath;
+    private String imageFileName;
+    private LocalDateTime createdAt;
     @ManyToOne
     private BusinessItemEntity businessItemEntity;
 }

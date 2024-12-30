@@ -16,4 +16,5 @@ public class BusinessItemDTO {
     private String title;
     private String description;
     private Double unitPrice;
+    private Long businessDetailId;
 }

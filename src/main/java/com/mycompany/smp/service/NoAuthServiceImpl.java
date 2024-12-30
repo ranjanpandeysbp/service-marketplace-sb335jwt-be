@@ -30,10 +30,14 @@ public class NoAuthServiceImpl {
     private BusinessRepository businessRepository;
     @Autowired
     private IndustryRepository industryRepository;
+    @Autowired
+    private BusinessItemRepository businessItemRepository;
 
     public Long addBusinessItem(BusinessItemDTO businessItemDTO){
-
-        return null;
+        BusinessItemEntity bie = new BusinessItemEntity();
+        BeanUtils.copyProperties(businessItemDTO, bie);
+        bie = businessItemRepository.save(bie);
+        return bie.getId();
     }
     public BusinessResponseDTO onboardBusiness(BusinessRequestDTO request) {
         BusinessDetailEntity se = BusinessDetailMapper.INSTANCE.toEntity(request);

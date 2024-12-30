@@ -1,5 +1,6 @@
 package com.mycompany.smp.controller;
 
+import com.mycompany.smp.dto.BusinessItemDTO;
 import com.mycompany.smp.dto.BusinessRequestDTO;
 import com.mycompany.smp.dto.BusinessResponseDTO;
 import com.mycompany.smp.entity.BusinessTypeEntity;
@@ -53,8 +54,8 @@ public class CommonController {
     }
 
     @PostMapping("/onboard/businessItem")
-    public ResponseEntity<BusinessResponseDTO> addBusinessItem(@Valid @RequestBody BusinessRequestDTO serviceRequestDTO){
-        BusinessResponseDTO serviceResponseDTO = noAuthService.onboardBusiness(serviceRequestDTO);
-        return new ResponseEntity<>(serviceResponseDTO, HttpStatus.CREATED);
+    public ResponseEntity<Long> addBusinessItem(@Valid @RequestBody BusinessItemDTO businessItemDTO){
+        Long businessItemId = noAuthService.addBusinessItem(businessItemDTO);
+        return new ResponseEntity<>(businessItemId, HttpStatus.CREATED);
     }
 }
