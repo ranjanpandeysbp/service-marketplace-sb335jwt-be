@@ -6,12 +6,15 @@ import com.mycompany.smp.dto.BusinessRequestDTO;
 import com.mycompany.smp.dto.BusinessResponseDTO;
 import com.mycompany.smp.entity.*;
 import com.mycompany.smp.mapper.BusinessDetailMapper;
+import com.mycompany.smp.mapper.BusinessItemMapper;
 import com.mycompany.smp.repository.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -19,7 +22,7 @@ import java.util.Set;
 public class NoAuthServiceImpl {
 
     @Autowired
-    private BusinessDetailRepository serviceRepository;
+    private BusinessDetailRepository businessDetailRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -33,9 +36,20 @@ public class NoAuthServiceImpl {
     @Autowired
     private BusinessItemRepository businessItemRepository;
 
+    public List<BusinessItemDTO> getAllBusinessItemByDetailId(Long businessDetailId){
+        List<BusinessItemEntity> businessItemEntityList = businessItemRepository.findAllByBusinessDetailEntityIdOrderByUpdatedAtDesc(businessDetailId);
+        return BusinessItemMapper.INSTANCE.toDtoList(businessItemEntityList);
+    }
+
     public Long addBusinessItem(BusinessItemDTO businessItemDTO){
         BusinessItemEntity bie = new BusinessItemEntity();
         BeanUtils.copyProperties(businessItemDTO, bie);
+        bie.setCreatedAt(LocalDateTime.now());
+        bie.setUpdatedAt(LocalDateTime.now());
+        Optional<BusinessDetailEntity> optBde = businessDetailRepository.findById(businessItemDTO.getBusinessDetailId());
+        if(optBde.isPresent()){
+            bie.setBusinessDetailEntity(optBde.get());
+        }
         bie = businessItemRepository.save(bie);
         return bie.getId();
     }
@@ -66,7 +80,7 @@ public class NoAuthServiceImpl {
         ue = userRepository.save(ue);
         BusinessResponseDTO sr = null;
         se.setProvider(ue);
-        se = serviceRepository.save(se);
+        se = businessDetailRepository.save(se);
         sr = new BusinessResponseDTO();
         BeanUtils.copyProperties(se, sr);
         return sr;

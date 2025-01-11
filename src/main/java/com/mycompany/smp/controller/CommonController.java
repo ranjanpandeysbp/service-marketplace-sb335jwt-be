@@ -58,4 +58,10 @@ public class CommonController {
         Long businessItemId = noAuthService.addBusinessItem(businessItemDTO);
         return new ResponseEntity<>(businessItemId, HttpStatus.CREATED);
     }
+
+    @GetMapping("/{businessDetailId}/businessItems")
+    public ResponseEntity<List<BusinessItemDTO>> getAllBusinessItemByDetailId(@PathVariable Long businessDetailId){
+        List<BusinessItemDTO> businessItemList = noAuthService.getAllBusinessItemByDetailId(businessDetailId);
+        return new ResponseEntity<>(businessItemList, HttpStatus.OK);
+    }
 }

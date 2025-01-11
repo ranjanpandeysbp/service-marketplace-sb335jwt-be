@@ -31,6 +31,7 @@ public class BusinessDetailEntity {
     private String state;
     private String country;
     private String image;
+    @Lob
     private String googleEmbed;
     private String lat;
     private String lng;

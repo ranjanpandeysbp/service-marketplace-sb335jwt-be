@@ -2,6 +2,7 @@ package com.mycompany.smp.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.persistence.Lob;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -39,6 +40,7 @@ public class BusinessRequestDTO {
     //@NotNull
     private String state;
     private String country;
+    @Lob
     private String googleEmbed;
     private String lat;
     private String lng;

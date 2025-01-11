@@ -22,6 +22,7 @@ public class ImageEntity {
     private String imagePath;
     private String imageFileName;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     @ManyToOne
     private BusinessItemEntity businessItemEntity;
 }

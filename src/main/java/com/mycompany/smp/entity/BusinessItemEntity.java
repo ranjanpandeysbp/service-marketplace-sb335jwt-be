@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -21,7 +22,9 @@ public class BusinessItemEntity {
     private String description;
     private Double unitPrice;
     @ManyToOne
-    private BusinessDetailEntity businessEntity;
+    private BusinessDetailEntity businessDetailEntity;
     @OneToMany(mappedBy = "businessItemEntity")
     private List<ImageEntity> images;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

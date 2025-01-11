@@ -27,9 +27,11 @@ public class ImageServiceImpl {
         if(optBie.isPresent()){
             ImageEntity imageEntity = new ImageEntity();
             imageEntity.setCreatedAt(LocalDateTime.now());
+            imageEntity.setUpdatedAt(LocalDateTime.now());
             imageEntity.setImagePath(image.getImagePath());
-            imageEntity.setImageFileName(imageEntity.getImageFileName());
+            imageEntity.setImageFileName(image.getImageFileName());
             imageEntity.setBusinessItemEntity(optBie.get());
+            imageEntity.setCreatedAt(LocalDateTime.now());
             imageEntity = imageRepository.save(imageEntity);
             BeanUtils.copyProperties(imageEntity, image);
         }
