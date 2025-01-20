@@ -1,9 +1,11 @@
 package com.mycompany.smp.service;
 
+import com.mycompany.smp.dto.ErrorDTO;
 import com.mycompany.smp.dto.ServiceRequestDTO;
 import com.mycompany.smp.entity.CategoryEntity;
 import com.mycompany.smp.entity.ServiceEntity;
 import com.mycompany.smp.entity.UserEntity;
+import com.mycompany.smp.exception.BusinessException;
 import com.mycompany.smp.mapper.ServiceDetailMapper;
 import com.mycompany.smp.repository.CategoryRepository;
 import com.mycompany.smp.repository.ServiceRepository;
@@ -18,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ServiceDetailServiceImpl implements CommonService<ServiceResponseDTO ,ServiceRequestDTO> {
+public class ServiceDetailServiceImpl implements ServiceDetails, CommonService<ServiceResponseDTO ,ServiceRequestDTO> {
 
     @Autowired
     private ServiceRepository serviceRepository;
@@ -57,7 +59,21 @@ public class ServiceDetailServiceImpl implements CommonService<ServiceResponseDT
 
     @Override
     public ServiceResponseDTO update(ServiceRequestDTO request, Long id) {
-        return null;
+        ServiceEntity se = serviceRepository.findById(id)
+                .orElseThrow(()->new BusinessException(List.of(new ErrorDTO("SERVICE_NOT_FOUND", "Service with provide Id does not exist"))));
+
+        if(request.getTitle() != null){
+            se.setTitle(request.getTitle());
+        }
+        if(request.getDescription() != null){
+            se.setDescription(request.getDescription());
+        }
+        if(request.getOperationTiming() != null){
+            se.setOperationTiming(request.getOperationTiming());
+        }
+        se.setUpdatedAt(LocalDateTime.now());
+        se = serviceRepository.save(se);
+        return ServiceDetailMapper.INSTANCE.toDTO(se);
     }
 
     @Override
@@ -72,11 +88,30 @@ public class ServiceDetailServiceImpl implements CommonService<ServiceResponseDT
 
     @Override
     public List<ServiceResponseDTO> getAll() {
-        return List.of();
+        List<ServiceEntity> entityList = serviceRepository.findAllByActiveTrue();
+        return ServiceDetailMapper.INSTANCE.toDTOList(entityList);
     }
 
     @Override
     public List<ServiceResponseDTO> search(ServiceRequestDTO request) {
         return List.of();
+    }
+
+    @Override
+    public List<ServiceResponseDTO> getAllActiveByProvider(Long providerId) {
+        List<ServiceEntity> entityList = serviceRepository.findAllByActiveTrueAndProviderId(providerId);
+        return ServiceDetailMapper.INSTANCE.toDTOList(entityList);
+    }
+
+    @Override
+    public List<ServiceResponseDTO> getAllActiveByCategory(Long categoryId) {
+        List<ServiceEntity> entityList = serviceRepository.findAllByActiveTrueAndCategoryId(categoryId);
+        return ServiceDetailMapper.INSTANCE.toDTOList(entityList);
+    }
+
+    @Override
+    public List<ServiceResponseDTO> getAllInactive() {
+        List<ServiceEntity> entityList = serviceRepository.findAllByActiveFalse();
+        return ServiceDetailMapper.INSTANCE.toDTOList(entityList);
     }
 }
