@@ -2,6 +2,7 @@ package com.mycompany.smp.controller;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,6 +46,16 @@ public class AuthController {
 
     @Autowired
     JwtServiceImpl jwtService;
+
+    @PostMapping("/resetPassword")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody LoginRequestDTO requestDTO){
+        Optional<UserEntity> optUe = userRepository.findByEmail(requestDTO.getEmail());
+        if(optUe.isPresent()){
+            optUe.get().setPassword(encoder.encode(requestDTO.getPassword()));
+            userRepository.save(optUe.get());
+        }
+        return new ResponseEntity<>("Password reset successfully", HttpStatus.CREATED);
+    }
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestDTO loginRequest) {
