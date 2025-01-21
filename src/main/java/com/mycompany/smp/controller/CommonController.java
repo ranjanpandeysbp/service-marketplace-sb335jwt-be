@@ -6,9 +6,11 @@ import com.mycompany.smp.dto.BusinessResponseDTO;
 import com.mycompany.smp.entity.BusinessTypeEntity;
 import com.mycompany.smp.entity.CategoryEntity;
 import com.mycompany.smp.entity.IndustryTypeEntity;
+import com.mycompany.smp.entity.SubCategoryEntity;
 import com.mycompany.smp.repository.BusinessRepository;
 import com.mycompany.smp.repository.CategoryRepository;
 import com.mycompany.smp.repository.IndustryRepository;
+import com.mycompany.smp.repository.SubCategoryRepository;
 import com.mycompany.smp.service.NoAuthServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class CommonController {
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
+    private SubCategoryRepository subCategoryRepository;
+    @Autowired
     private BusinessRepository businessRepository;
     @Autowired
     private IndustryRepository industryRepository;
@@ -35,6 +39,11 @@ public class CommonController {
     @GetMapping("/categories")
     public ResponseEntity<List<CategoryEntity>> allCategories(){
         return new ResponseEntity<>(categoryRepository.findAllByOrderByNameAsc(), HttpStatus.OK);
+    }
+
+    @GetMapping("/subcategories/{categoryId}")
+    public ResponseEntity<List<SubCategoryEntity>> allSubCategories(@PathVariable Long categoryId){
+        return new ResponseEntity<>(subCategoryRepository.findAllByCategoryIdOrderByNameAsc(categoryId), HttpStatus.OK);
     }
 
     @GetMapping("/industries")
